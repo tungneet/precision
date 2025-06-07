@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precision Play</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #1d1d1f;
+            background: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        .display-large {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 600;
+            line-height: 1.05;
+            letter-spacing: -0.015em;
+        }
+
+        .display-medium {
+            font-size: clamp(32px, 6vw, 64px);
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+        }
+
+        .headline {
+            font-size: clamp(24px, 4vw, 40px);
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .body-large {
+            font-size: clamp(19px, 2.5vw, 21px);
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .body {
+            font-size: 17px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1d1d1f;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: #1d1d1f;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #007aff;
+        }
+
+        /* Sections */
+        .section {
+            min-height: 100vh;
+            display: none;
+            padding: 120px 0 80px;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Home Section */
+        #home {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            padding: 160px 0 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-visual {
+            position: absolute;
+            top: 50%;
+            right: -10%;
+            transform: translateY(-50%);
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #007aff 0%, #0056d3 100%);
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .hero-visual::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            width: 60%;
+            height: 60%;
+            background: linear-gradient(45deg, #00d4ff 0%, #007aff 100%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-eyebrow {
+            font-size: 14px;
+            font-weight: 500;
+            color: #007aff;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            margin-bottom: 24px;
+            color: #1d1d1f;
+        }
+
+        .hero-subtitle {
+            margin-bottom: 48px;
+            color: #6e6e73;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #007aff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background: #0056d3;
+            transform: translateY(-1px);
+        }
+
+        .cta-secondary {
+            display: inline-block;
+            color: #007aff;
+            padding: 12px 24px;
+            border: none;
+            background: transparent;
+            font-size: 17px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-left: 16px;
+        }
+
+        .cta-secondary:hover {
+            background: rgba(0, 122, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: #f5f5f7;
+            padding: 80px 0;
+            margin: 80px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 48px;
+            text-align: center;
+        }
+
+        .stat-item {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .stat-number {
+            font-size: 64px;
+            font-weight: 700;
+            color: #007aff;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 17px;
+            color: #6e6e73;
+            font-weight: 400;
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 120px 0;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .visual-element {
+            position: absolute;
+            right: -15%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 300px;
+            height: 200px;
+            background: linear-gradient(135deg, #f5f5f7 0%, #e5e5e7 100%);
+            border-radius: 16px;
+            opacity: 0.6;
+            z-index: -1;
+        }
+
+        .visual-element::after {
+            content: '🚀';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            opacity: 0.3;
+        }
+
+        .tech-visual {
+            position: absolute;
+            left: -15%;
+            top: 30%;
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(45deg, #007aff 0%, #00d4ff 100%);
+            border-radius: 50%;
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .mission-visual {
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"><defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><step offset="0%" style="step-color:%23007aff;step-opacity:0.1"/><step offset="100%" style="step-color:%2300d4ff;step-opacity:0.05"/></linearGradient></defs><rect width="200" height="100" fill="url(%23grad)" rx="16"/><circle cx="50" cy="30" r="8" fill="%23007aff" opacity="0.3"/><circle cx="150" cy="70" r="12" fill="%2300d4ff" opacity="0.2"/><rect x="80" y="20" width="40" height="4" fill="%23007aff" opacity="0.2" rx="2"/><rect x="80" y="30" width="60" height="4" fill="%23007aff" opacity="0.15" rx="2"/></svg>');
+            background-size: cover;
+        }
+
+        .section-eyebrow {
+            font-size: 14px;
+            font-weight: 500;
+            color: #007aff;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            margin-bottom: 32px;
+            color: #1d1d1f;
+        }
+
+        .section-content {
+            color: #6e6e73;
+            margin-bottom: 32px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 48px;
+            margin: 80px 0;
+        }
+
+        .feature-card {
+            text-align: left;
+            animation: fadeInUp 1s ease-out;
+            background: #f8f9ff;
+            padding: 32px;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 122, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.1);
+            border-color: rgba(0, 122, 255, 0.2);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: #007aff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin-bottom: 24px;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 12px;
+        }
+
+        .feature-description {
+            color: #6e6e73;
+            font-size: 17px;
+            line-height: 1.5;
+        }
+
+        /* Partners Section */
+        .partners-section {
+            background: #f5f5f7;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .partners-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 64px;
+            flex-wrap: wrap;
+            margin-top: 48px;
+        }
+
+        .partner-logo {
+            font-size: 18px;
+            font-weight: 600;
+            color: #6e6e73;
+            padding: 16px 24px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Quote Section */
+        .quote-section {
+            background: #1d1d1f;
+            color: white;
+            padding: 120px 0;
+            text-align: center;
+        }
+
+        .quote-text {
+            font-size: clamp(24px, 4vw, 32px);
+            font-weight: 500;
+            line-height: 1.3;
+            max-width: 800px;
+            margin: 0 auto 32px;
+            font-style: italic;
+        }
+
+        .quote-author {
+            font-size: 17px;
+            color: #a1a1a6;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            text-align: center;
+            padding: 120px 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 48px;
+            margin-top: 64px;
+        }
+
+        .contact-item {
+            text-align: center;
+        }
+
+        .contact-icon {
+            width: 56px;
+            height: 56px;
+            background: #f5f5f7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 16px;
+            color: #007aff;
+        }
+
+        .contact-label {
+            font-size: 14px;
+            color: #6e6e73;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-value {
+            font-size: 17px;
+            color: #1d1d1f;
+            font-weight: 500;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Navigation */
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            width: 24px;
+            height: 18px;
+            justify-content: space-between;
+        }
+
+        .mobile-menu span {
+            width: 100%;
+            height: 2px;
+            background: #1d1d1f;
+            transition: 0.3s;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .section {
+                padding: 100px 0 60px;
+            }
+
+            #home {
+                padding: 140px 0 100px;
+            }
+
+            .content-section {
+                padding: 80px 0;
+            }
+
+            .stats-grid {
+                gap: 32px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+                margin: 60px 0;
+            }
+
+            .partners-grid {
+                gap: 32px;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .cta-secondary {
+                margin-left: 0;
+                margin-top: 16px;
+                display: block;
+            }
+        }
+
+        /* Smooth scrolling and transitions */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .section {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .section.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">Precision Play</a>
+            <ul class="nav-links">
+                <li><a onclick="showSection('home')">Home</a></li>
+                <li><a onclick="showSection('about')">Mission</a></li>
+                <li><a onclick="showSection('services')">Technology</a></li>
+                <li><a onclick="showSection('join')">Join Us</a></li>
+                <li><a onclick="showSection('contact')">Contact</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="section active">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-eyebrow">India's Olympic Future</div>
+                <h1 class="display-large hero-title">100 Gold Medals.<br>5 Olympics.</h1>
+                <p class="body-large hero-subtitle">We're building the AI technology layer that will transform Indian sports forever.</p>
+                <div>
+                    <a href="#" class="cta-button" onclick="showSection('join')">Join the Mission</a>
+                    <a href="#" class="cta-secondary" onclick="showSection('about')">Learn More</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Olympics</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100</div>
+                        <div class="stat-label">Gold Medals</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">∞</div>
+                        <div class="stat-label">Potential</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="content-section">
+                <div class="section-eyebrow">Our Mission</div>
+                <h2 class="display-medium section-title">Redefining what's possible in Indian sports.</h2>
+                <div class="body-large section-content">
+                    <p>The real deficiencies in India's sports environment go beyond funding. The deeper problem is mindset: "Recreation is accepted. A career in sports is not."</p>
+                    <br>
+                    <p>We need engineers, doctors, and scientists building the science behind sports — not just as a job, but as a responsibility.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="quote-section">
+            <div class="container">
+                <div class="quote-text">"If we have the right to ask why we were not successful at the 2024 Olympics, we should also take proportional responsibility for it."</div>
+                <div class="quote-author">The moment that changed everything</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="content-section">
+                <div class="section-eyebrow">The Solution</div>
+                <h2 class="headline section-title">Technology meets tradition.</h2>
+                <div class="body section-content">
+                    <p>Precision Play is building AI-powered sports science solutions. We're embedding cutting-edge technology into existing training systems, enabling the Indian sports ecosystem to bring out the absolute best in every athlete.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section">
+        <div class="container">
+            <div class="content-section">
+                <div class="section-eyebrow">Technology</div>
+                <h2 class="display-medium section-title">AI-powered performance.</h2>
+                <div class="body-large section-content">
+                    <p>We're building the technology infrastructure that will transform how Indian athletes train, compete, and win.</p>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🧠</div>
+                        <h3 class="feature-title">Performance Analytics</h3>
+                        <p class="feature-description">AI algorithms that analyze technique, identify improvements, and optimize training in real-time.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3 class="feature-title">Sports Science Integration</h3>
+                        <p class="feature-description">Comprehensive platforms integrating biomechanics, physiology, and psychology for holistic development.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3 class="feature-title">Talent Identification</h3>
+                        <p class="feature-description">AI-driven scouting systems to discover promising athletes across India's diverse regions.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3 class="feature-title">Mobile Coaching</h3>
+                        <p class="feature-description">World-class coaching insights accessible to athletes regardless of location or resources.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3 class="feature-title">Training Optimization</h3>
+                        <p class="feature-description">Personalized programs based on individual data, injury prevention, and performance algorithms.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🏆</div>
+                        <h3 class="feature-title">Competition Analytics</h3>
+                        <p class="feature-description">Real-time insights during competitions to maximize medal opportunities at every event.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Section -->
+    <section id="join" class="section">
+        <div class="container">
+            <div class="content-section">
+                <div class="section-eyebrow">Join the Revolution</div>
+                <h2 class="display-medium section-title">Build the future of Indian sports.</h2>
+                <div class="body-large section-content">
+                    <p>We're looking for engineers, data scientists, sports professionals, and visionaries who want to take responsibility for India's Olympic success.</p>
+                </div>
+                <div>
+                    <a href="#" class="cta-button" onclick="showSection('contact')">Get Involved</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="partners-section">
+            <div class="container">
+                <div class="section-eyebrow">Our Partners</div>
+                <h3 class="headline">Working with India's leading sports organizations.</h3>
+                <div class="partners-grid">
+                    <div class="partner-logo">Rowing Federation of India</div>
+                    <div class="partner-logo">Athletics Federation of India</div>
+                    <div class="partner-logo">Sports Authority of India</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quote-section">
+            <div class="container">
+                <div class="quote-text">"Sports science was credited for the Indian men's hockey team's success over the past decade. Now it's time to embed it everywhere."</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="content-section contact-section">
+                <div class="section-eyebrow">Get in Touch</div>
+                <h2 class="display-medium section-title">Let's build this together.</h2>
+                <div class="body-large section-content">
+                    <p>Whether you're a technologist, sports professional, or someone who believes in India's potential — we'd love to connect.</p>
+                </div>
+
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-label">Email</div>
+                        <div class="contact-value">hello@precisionplay.in</div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">💼</div>
+                        <div class="contact-label">LinkedIn</div>
+                        <div class="contact-value">@precisionplay</div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">🐦</div>
+                        <div class="contact-label">Follow</div>
+                        <div class="contact-value">#PrecisionPlay</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 80px; padding: 48px; background: #f5f5f7; border-radius: 16px; text-align: left;">
+                    <h3 class="headline" style="margin-bottom: 16px; color: #1d1d1f;">Our Mission Statement</h3>
+                    <p class="body" style="color: #6e6e73;">Enabling the Indian sports system to bring out the best in athletes through AI-powered technology and sports science.</p>
+                    <p class="body" style="color: #6e6e73; margin-top: 16px;"><strong>See you on the podium.</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Navigation functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section with delay for smooth transition
+            setTimeout(() => {
+                document.getElementById(sectionId).classList.add('active');
+            }, 100);
+            
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Navbar background change on scroll
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('nav');
+            
+            if (window.scrollY > lastScrollY && window.scrollY > 100) {
+                // Scrolling down
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                // Scrolling up
+                navbar.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollY = window.scrollY;
+        });
+
+        // Mobile menu functionality
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '100%';
+                navLinks.style.left = '0';
+                navLinks.style.width = '100%';
+                navLinks.style.background = 'rgba(255, 255, 255, 0.95)';
+                navLinks.style.backdropFilter = 'saturate(180%) blur(20px)';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.padding = '20px';
+                navLinks.style.gap = '16px';
+            }
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const animateElements = document.querySelectorAll('.feature-card, .stat-item, .hero-content');
+            animateElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // Add subtle parallax to hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent) {
+                heroContent.style.transform = `translateY(${scrolled * 0.1}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
