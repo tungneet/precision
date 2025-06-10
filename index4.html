@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precision Play - Enabling Excellence in Indian Sports</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1d1d1f;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e5f99;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #1e5f99 0%, #00bcd4 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1d1d1f;
+            font-weight: 400;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #1e5f99;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, #f8fbff 0%, #e3f2fd 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(30, 95, 153, 0.1) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, -20px) rotate(180deg); }
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1e5f99;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #1e5f99 0%, #00bcd4 100%);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(30, 95, 153, 0.3);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 100px 0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .section.hidden {
+            display: none;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #1e5f99;
+            text-align: center;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* Mission Section */
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .mission-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .mission-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .mission-card h3 {
+            color: #1e5f99;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        /* Partners Section */
+        .partners {
+            text-align: center;
+            padding: 80px 0;
+            background: #f8fbff;
+        }
+
+        .partners-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .partner-logo {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            color: #1e5f99;
+        }
+
+        /* Join Us Section */
+        .join-us {
+            background: linear-gradient(135deg, #1e5f99 0%, #00bcd4 100%);
+            color: white;
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .join-us h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .join-us p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        .join-button {
+            background: white;
+            color: #1e5f99;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .join-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        .footer {
+            background: #1d1d1f;
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+
+            .section h2 {
+                font-size: 2rem;
+            }
+
+            .partners-grid {
+                gap: 30px;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Page transitions */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="showHome()">
+                <div class="logo-icon">PP</div>
+                Precision Play
+            </a>
+            <ul class="nav-links">
+                <li><a onclick="showHome()">Home</a></li>
+                <li><a onclick="showAbout()">About Us</a></li>
+                <li><a onclick="showMission()">Mission</a></li>
+                <li><a onclick="showJoin()">Join the Revolution</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero section">
+        <div class="hero-content fade-in">
+            <h1>Precision Play</h1>
+            <p>Enabling the Indian sports system to bring out the best in athletes through cutting-edge sports science and AI technology</p>
+            <a href="#" class="cta-button" onclick="showMission()">Our Mission</a>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="section hidden">
+        <div class="fade-in">
+            <h2>About Us</h2>
+            <p>Right after graduating, I made a pivotal decision—not to follow the conventional path of joining an organization, despite securing a place through university placement. Instead, I chose to follow my heart over my brain, dedicating the next few years to qualifying for the Olympics.</p>
+            
+            <p>I wanted to experience the journey firsthand, map out the route to the top, and understand what it truly takes to reach the highest level in sports. The road was full of challenges, but for every obstacle, we found solutions.</p>
+            
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <h3>Identifying Core Issues</h3>
+                    <p>The real deficiencies in India's sports environment go beyond just funding. The deeper problem is mindset: "Recreation is accepted. A career in sports is not."</p>
+                </div>
+                <div class="mission-card">
+                    <h3>Taking Ownership</h3>
+                    <p>If we have the right to ask why we were not truly successful at the 2024 Olympics, we should also take proportional responsibility for it. India is my country, and its challenges are my challenges.</p>
+                </div>
+                <div class="mission-card">
+                    <h3>Building Solutions</h3>
+                    <p>We need more engineers, doctors, and scientists—people who will build the science behind sports, not just as a job, but as a responsibility.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section id="mission" class="section hidden">
+        <div class="fade-in">
+            <h2>Our Mission</h2>
+            <p style="text-align: center; font-size: 1.3rem; color: #1e5f99; font-weight: 600; margin-bottom: 40px;">
+                Making India win 100 gold medals at the next five Olympics (2028, 2030, 2032, 2034, 2036)
+            </p>
+            
+            <p>The moment the Olympics 2024 Closing Ceremony ended, we made a decision—to start a sports science company: Precision Play. We are building a technology layer for the Indian sports ecosystem, leveraging AI.</p>
+            
+            <p>Piyush K. Dubey, former head coach of the Indian men's hockey team, credited sports science for the team's success over the past decade. Today, it is time to embed sports science into our existing training and performance systems.</p>
+            
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <h3>Sports Science Integration</h3>
+                    <p>Embedding advanced sports science into existing training and performance systems across Indian sports infrastructure.</p>
+                </div>
+                <div class="mission-card">
+                    <h3>AI-Powered Analytics</h3>
+                    <p>Leveraging artificial intelligence to analyze performance data, optimize training programs, and predict athletic potential.</p>
+                </div>
+                <div class="mission-card">
+                    <h3>Technology Layer</h3>
+                    <p>Building comprehensive technology solutions that connect athletes, coaches, and sports organizations for maximum efficiency.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
+    <div class="partners">
+        <div class="fade-in">
+            <h2 style="color: #1e5f99;">Trusted Partners</h2>
+            <div class="partners-grid">
+                <div class="partner-logo">Rowing Federation of India</div>
+                <div class="partner-logo">Athletics Federation of India</div>
+                <div class="partner-logo">Sports Authority of India</div>
+                <div class="partner-logo">International Olympic Committee</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Join Us Section -->
+    <section id="join" class="join-us section hidden">
+        <div class="fade-in">
+            <h2>Join the Revolution</h2>
+            <p>Be part of India's journey to Olympic excellence. Whether you're an engineer, doctor, scientist, or sports enthusiast, we need passionate individuals who see sports science not just as a career, but as a responsibility to the nation.</p>
+            <p style="font-size: 1.4rem; font-weight: 600; margin-bottom: 30px;">See you on the podium.</p>
+            <a href="mailto:info@precisionplay.in" class="join-button">Get Involved</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="fade-in">
+            <p>&copy; 2025 Precision Play. Enabling excellence in Indian sports through science and technology.</p>
+            <p style="margin-top: 10px; color: #888;">#newcompany #IndianSports #Tokyo2028</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation functionality
+        function showHome() {
+            hideAllSections();
+            document.getElementById('home').classList.remove('hidden');
+            updateActiveNav('home');
+        }
+
+        function showAbout() {
+            hideAllSections();
+            document.getElementById('about').classList.remove('hidden');
+            updateActiveNav('about');
+            animateElements();
+        }
+
+        function showMission() {
+            hideAllSections();
+            document.getElementById('mission').classList.remove('hidden');
+            updateActiveNav('mission');
+            animateElements();
+        }
+
+        function showJoin() {
+            hideAllSections();
+            document.getElementById('join').classList.remove('hidden');
+            updateActiveNav('join');
+            animateElements();
+        }
+
+        function hideAllSections() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.add('hidden');
+            });
+        }
+
+        function updateActiveNav(active) {
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.style.color = '#1d1d1f';
+            });
+        }
+
+        // Animation on scroll/load
+        function animateElements() {
+            setTimeout(() => {
+                const elements = document.querySelectorAll('.fade-in');
+                elements.forEach((element, index) => {
+                    setTimeout(() => {
+                        element.classList.add('visible');
+                    }, index * 200);
+                });
+            }, 100);
+        }
+
+        // Navbar background change on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.8)';
+            }
+        });
+
+        // Initialize animations on load
+        document.addEventListener('DOMContentLoaded', () => {
+            animateElements();
+        });
+
+        // Smooth hover effects for cards
+        document.querySelectorAll('.mission-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.boxShadow = '0 8px 30px rgba(30, 95, 153, 0.15)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
+            });
+        });
+    </script>
+</body>
+</html>
