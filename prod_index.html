@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Doctor - AI Avatar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #bce0df 0%, #a8d5d3 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .step-indicator {
+            display: none;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: none;
+        }
+
+        .step.completed {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(103, 171, 168, 0.4);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .secondary-btn {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .secondary-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #fcc;
+        }
+
+        .success {
+            background: #efe;
+            color: #3c3;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #cfc;
+        }
+
+        .user-info {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .user-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .user-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .user-info-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .user-info-value {
+            color: #333;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Avatar container - CENTERED */
+        #avatar-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            width: 90vw;
+            max-width: 800px;
+            height: 80vh;
+            max-height: 600px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            display: none;
+            overflow: hidden;
+        }
+
+        #avatar-container.show {
+            display: block;
+        }
+
+        #avatar-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .avatar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            display: none;
+        }
+
+        .avatar-overlay.show {
+            display: block;
+        }
+
+        .close-avatar {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-avatar:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <!-- Step 1: Login -->
+        <div id="step1" class="step-content">
+            <div class="header">
+                <h1>Welcome</h1>
+                <p>Please login to continue</p>
+            </div>
+            
+            <div class="step-indicator">
+                <div class="step active">1</div>
+                <div class="step">2</div>
+                <div class="step">3</div>
+            </div>
+
+            <div id="loginError" class="error hidden"></div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter username" value="TestUser">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password" value="Awonderfulday">
+            </div>
+
+            <button id="loginBtn">Login</button>
+        </div>
+
+        <!-- Step 2: User ID Input -->
+        <div id="step2" class="step-content hidden">
+            <div class="header">
+                <h1>👤 User Identification</h1>
+                <p>Enter your User ID</p>
+            </div>
+            
+            <div class="step-indicator">
+                <div class="step completed">1</div>
+                <div class="step active">2</div>
+                <div class="step">3</div>
+            </div>
+
+            <div id="userError" class="error hidden"></div>
+
+            <div class="form-group">
+                <label for="userId">User ID</label>
+                <input type="text" id="userId" placeholder="Enter your User ID" value="72cdbc78-6256-422c-b230-962e664e2d34">
+            </div>
+
+            <button id="loadUserBtn">Load User</button>
+            <button class="secondary-btn" id="signupBtn">Sign Up as New User</button>
+            <button class="secondary-btn" id="logoutBtn">Logout</button>
+        </div>
+
+        <!-- Step 2.5: Sign Up Form -->
+        <div id="step2_5" class="step-content hidden">
+            <div class="header">
+                <h1>Create New Account</h1>
+                <p>Enter your details to get started</p>
+            </div>
+            
+            <div class="step-indicator">
+                <div class="step completed">1</div>
+                <div class="step active">2</div>
+                <div class="step">3</div>
+            </div>
+
+            <div id="signupError" class="error hidden"></div>
+
+            <div class="form-group">
+                <label for="signupName">Full Name</label>
+                <input type="text" id="signupName" placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label for="signupEmail">Email</label>
+                <input type="email" id="signupEmail" placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label for="signupGoal">Your Goal</label>
+                <input type="text" id="signupGoal" placeholder="What do you want to achieve?">
+            </div>
+
+            <div class="form-group">
+                <label for="signupDomain">Domain/Area</label>
+                <input type="text" id="signupDomain" placeholder="e.g., Health, Fitness, Mental Health">
+            </div>
+
+            <div class="form-group">
+                <label for="signupPersona">Preferred Persona</label>
+                <input type="text" id="signupPersona" placeholder="e.g., Personal Doctor, Health Coach" value="Personal Doctor">
+            </div>
+
+            <button id="createUserBtn">Create Account</button>
+            <button class="secondary-btn" id="cancelSignupBtn">← Back</button>
+        </div>
+
+        <!-- Step 3: User Details & Avatar -->
+        <div id="step3" class="step-content hidden">
+            <div class="header">
+                <h1>Patient Information</h1>
+                <p>Confirm your details to begin consultation</p>
+            </div>
+            
+            <div class="step-indicator">
+                <div class="step completed">1</div>
+                <div class="step completed">2</div>
+                <div class="step active">3</div>
+            </div>
+
+            <div id="avatarError" class="error hidden"></div>
+            <div id="avatarSuccess" class="success hidden"></div>
+
+            <div id="userDetails" class="user-info"></div>
+
+            <button id="startAvatarBtn">Confirm your details to proceed</button>
+            <button class="secondary-btn" id="backBtn">← Back</button>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p id="loadingText">Processing...</p>
+        </div>
+    </div>
+
+    <!-- Avatar Overlay and Container -->
+    <div class="avatar-overlay" id="avatarOverlay"></div>
+    <div id="avatar-container">
+        <button class="close-avatar" id="closeAvatar">×</button>
+        <iframe id="avatar-iframe" allow="microphone; camera; autoplay" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"></iframe>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE = 'https://l6958ys9p7.execute-api.ap-south-1.amazonaws.com/Prod';
+        let authToken = localStorage.getItem('auth_token');
+        let currentUser = null;
+
+        // Helper Functions
+        function showStep(stepNum) {
+            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+            const stepId = typeof stepNum === 'string' ? `step${stepNum}` : `step${stepNum}`;
+            document.getElementById(stepId).classList.remove('hidden');
+        }
+
+        function showLoading(text = 'Processing...') {
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('loadingText').textContent = text;
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').classList.add('hidden');
+        }
+
+        function showError(elementId, message) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.classList.remove('hidden');
+        }
+
+        function hideError(elementId) {
+            document.getElementById(elementId).classList.add('hidden');
+        }
+
+        async function apiCall(endpoint, options = {}) {
+            const headers = {
+                'Content-Type': 'application/json',
+                ...options.headers
+            };
+
+            if (authToken) {
+                headers['Authorization'] = `Bearer ${authToken}`;
+            }
+
+            const response = await fetch(`${API_BASE}${endpoint}`, {
+                ...options,
+                headers
+            });
+
+            if (!response.ok) {
+                const error = await response.json().catch(() => ({ detail: 'Request failed' }));
+                throw new Error(error.detail || 'Request failed');
+            }
+
+            return response.json();
+        }
+
+        // Step 1: Login
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                showError('loginError', 'Please enter both username and password');
+                return;
+            }
+
+            hideError('loginError');
+            showLoading('Logging in...');
+
+            try {
+                const data = await apiCall('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ username, password })
+                });
+
+                authToken = data.access_token;
+                localStorage.setItem('auth_token', authToken);
+                
+                hideLoading();
+                showStep(2);
+            } catch (error) {
+                hideLoading();
+                showError('loginError', error.message);
+            }
+        });
+
+        // Step 2: Load User
+        document.getElementById('loadUserBtn').addEventListener('click', async () => {
+            const userId = document.getElementById('userId').value.trim();
+
+            if (!userId) {
+                showError('userError', 'Please enter a User ID');
+                return;
+            }
+
+            hideError('userError');
+            showLoading('Loading user details...');
+
+            try {
+                currentUser = await apiCall(`/users/${userId}`);
+                hideLoading();
+                showStep(3);
+                displayUserDetails();
+            } catch (error) {
+                hideLoading();
+                showError('userError', error.message);
+            }
+        });
+
+        // Step 3: Display User Details
+        function displayUserDetails() {
+            const details = `
+                <div class="user-info-row">
+                    <span class="user-info-label">Name:</span>
+                    <span class="user-info-value">${currentUser.name}</span>
+                </div>
+                <div class="user-info-row">
+                    <span class="user-info-label">Email:</span>
+                    <span class="user-info-value">${currentUser.email}</span>
+                </div>
+                <div class="user-info-row">
+                    <span class="user-info-label">Goal:</span>
+                    <span class="user-info-value">${currentUser.requirements.goal}</span>
+                </div>
+                <div class="user-info-row">
+                    <span class="user-info-label">Domain:</span>
+                    <span class="user-info-value">${currentUser.requirements.domain}</span>
+                </div>
+                <div class="user-info-row">
+                    <span class="user-info-label">Persona:</span>
+                    <span class="user-info-value">${currentUser.requirements.persona}</span>
+                </div>
+            `;
+            document.getElementById('userDetails').innerHTML = details;
+        }
+
+        // Step 3: Start Avatar
+        document.getElementById('startAvatarBtn').addEventListener('click', async () => {
+            hideError('avatarError');
+            document.getElementById('avatarSuccess').classList.add('hidden');
+            showLoading('Passing your details to your AI Doctor...\nThis may take 30-60 seconds');
+
+            try {
+                // Update KB
+                await apiCall('/kb/update', {
+                    method: 'POST',
+                    body: JSON.stringify({ user_id: currentUser.user_id })
+                });
+
+                hideLoading();
+                
+                // Load HeyGen Avatar immediately without showing message
+                loadAvatar();
+            } catch (error) {
+                hideLoading();
+                showError('avatarError', error.message);
+            }
+        });
+
+        // Load HeyGen Avatar - ONLY CALLED AT STEP 3
+        function loadAvatar() {
+            const iframe = document.getElementById('avatar-iframe');
+            
+            // Only load if not already loaded (prevents multiple mic permission requests)
+            if (iframe.src) {
+                // Already loaded, just show it
+                document.getElementById('avatarOverlay').classList.add('show');
+                document.getElementById('avatar-container').classList.add('show');
+                return;
+            }
+            
+            const avatarUrl = 'https://labs.heygen.com/guest/streaming-embed?share=eyJxdWFsaXR5IjoiaGlnaCIsImF2YXRhck5hbWUiOiJEZXh0ZXJfRG9jdG9yX1N0YW5kaW5nMl9w%0D%0AdWJsaWMiLCJwcmV2aWV3SW1nIjoiaHR0cHM6Ly9maWxlczIuaGV5Z2VuLmFpL2F2YXRhci92My84%0D%0AOGQ0MjFmOTM5MDQ0YmIwOGQ4OTJlODMzOTMxOTQ4Yl80NTU5MC9wcmV2aWV3X3RhbGtfMS53ZWJw%0D%0AIiwibmVlZFJlbW92ZUJhY2tncm91bmQiOmZhbHNlLCJrbm93bGVkZ2VCYXNlSWQiOiI2ODM0YjRl%0D%0AYzVhOTg0M2UxYTBkNGQ0ODViMTQwOWY4YyIsInVzZXJuYW1lIjoiYjcyMGVmMmQwNzc4NDUxMTlh%0D%0AMDAxNjMwODMwNGQxMjYifQ%3D%3D&inIFrame=1';
+            
+            iframe.src = avatarUrl;
+            document.getElementById('avatarOverlay').classList.add('show');
+            document.getElementById('avatar-container').classList.add('show');
+        }
+
+        // Close Avatar
+        document.getElementById('closeAvatar').addEventListener('click', () => {
+            document.getElementById('avatarOverlay').classList.remove('show');
+            document.getElementById('avatar-container').classList.remove('show');
+            document.getElementById('avatar-iframe').src = '';
+        });
+
+        // Back Button
+        document.getElementById('backBtn').addEventListener('click', () => {
+            showStep(2);
+            document.getElementById('avatarSuccess').classList.add('hidden');
+            hideError('avatarError');
+        });
+
+        // Sign Up Button
+        document.getElementById('signupBtn').addEventListener('click', () => {
+            hideError('userError');
+            showStep('2_5');
+        });
+
+        // Cancel Signup Button
+        document.getElementById('cancelSignupBtn').addEventListener('click', () => {
+            hideError('signupError');
+            showStep(2);
+        });
+
+        // Create User Button
+        document.getElementById('createUserBtn').addEventListener('click', async () => {
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const goal = document.getElementById('signupGoal').value.trim();
+            const domain = document.getElementById('signupDomain').value.trim();
+            const persona = document.getElementById('signupPersona').value.trim() || 'Personal Doctor';
+
+            if (!name || !email || !goal || !domain) {
+                showError('signupError', 'Please fill in all required fields');
+                return;
+            }
+
+            hideError('signupError');
+            showLoading('Creating your account...');
+
+            try {
+                const response = await apiCall('/users', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        requirements: {
+                            goal: goal,
+                            domain: domain,
+                            persona: persona,
+                            language: 'English',
+                            extra_notes: ''
+                        }
+                    })
+                });
+
+                currentUser = response.user;
+                hideLoading();
+                
+                // Show success message with user ID
+                alert(`Account created successfully!\n\nYour User ID: ${response.user_id}\n\nPlease save this ID for future logins.`);
+                
+                showStep(3);
+                displayUserDetails();
+            } catch (error) {
+                hideLoading();
+                showError('signupError', error.message);
+            }
+        });
+
+        // Logout Button
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('auth_token');
+            authToken = null;
+            currentUser = null;
+            showStep(1);
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('userId').value = '';
+        });
+
+        // Check if already logged in
+        if (authToken) {
+            showStep(2);
+        }
+    </script>
+</body>
+</html>
