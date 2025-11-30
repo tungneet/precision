@@ -289,12 +289,12 @@
 
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" placeholder="Enter username" value="">
+                <input type="text" id="username" placeholder="Enter username" value="TestUser">
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter password" value="">
+                <input type="password" id="password" placeholder="Enter password" value="Awonderfulday">
             </div>
 
             <button id="loginBtn">Login</button>
@@ -317,7 +317,7 @@
 
             <div class="form-group">
                 <label for="userId">User ID</label>
-                <input type="text" id="userId" placeholder="Enter your User ID" value="">
+                <input type="text" id="userId" placeholder="Enter your User ID" value="72cdbc78-6256-422c-b230-962e664e2d34">
             </div>
 
             <button id="loadUserBtn">Load User</button>
@@ -643,11 +643,58 @@
                 currentUser = response.user;
                 hideLoading();
                 
-                // Show success message with user ID
-                alert(`Account created successfully!\n\nYour User ID: ${response.user_id}\n\nPlease save this ID for future logins.`);
+                // Show success message with user ID and copy button
+                const userId = response.user_id;
                 
-                showStep(3);
-                displayUserDetails();
+                // Create custom modal with copy button
+                const modal = document.createElement('div');
+                modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:9999;';
+                
+                const modalContent = document.createElement('div');
+                modalContent.style.cssText = 'background:white;padding:24px;border-radius:16px;max-width:380px;width:90%;box-shadow:0 4px 12px rgba(0,0,0,0.15);';
+                modalContent.innerHTML = `
+                    <p style="margin-bottom:12px;color:#333;font-size:14px;font-weight:500;">Your User ID</p>
+                    <div style="background:#f8f9fa;padding:10px 12px;border-radius:10px;margin-bottom:16px;display:flex;flex-direction:column;gap:8px;border:1px solid #e1e4e8;">
+                        <input type="text" value="${userId}" readonly style="width:100%;border:none;background:transparent;font-family:monospace;font-size:12px;color:#586069;outline:none;text-align:center;">
+                        <button id="copyUserIdBtn" style="background:#6c757d;color:white;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px;transition:0.2s;">
+                            Copy
+                        </button>
+                    </div>
+                    <button id="continueBtn" style="background:#6c757d;color:white;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px;width:100%;">
+                        Continue
+                    </button>
+                `;
+                
+                modal.appendChild(modalContent);
+                document.body.appendChild(modal);
+                
+                // Copy button functionality
+                document.getElementById('copyUserIdBtn').addEventListener('click', function() {
+                    navigator.clipboard.writeText(userId).then(() => {
+                        this.innerHTML = 'Copied';
+                        this.style.background = '#495057';
+                        setTimeout(() => {
+                            this.innerHTML = 'Copy';
+                            this.style.background = '#6c757d';
+                        }, 1500);
+                    });
+                });
+                
+                // Continue button
+                document.getElementById('continueBtn').addEventListener('click', () => {
+                    document.body.removeChild(modal);
+                    showStep(3);
+                    displayUserDetails();
+                });
+                
+                // Close on backdrop click
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        document.body.removeChild(modal);
+                        showStep(3);
+                        displayUserDetails();
+                    }
+                });
             } catch (error) {
                 hideLoading();
                 showError('signupError', error.message);
