@@ -289,12 +289,12 @@
 
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" placeholder="Enter username" value="">
+                <input type="text" id="username" placeholder="Enter username" value="TestUser">
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter password" value="">
+                <input type="password" id="password" placeholder="Enter password" value="Awonderfulday">
             </div>
 
             <button id="loginBtn">Login</button>
@@ -317,7 +317,7 @@
 
             <div class="form-group">
                 <label for="userId">User ID</label>
-                <input type="text" id="userId" placeholder="Enter your User ID" value="72cdbc78-6256-422c-b230-962e664e2d34">
+                <input type="text" id="userId" placeholder="Enter your User ID" value="">
             </div>
 
             <button id="loadUserBtn">Load User</button>
@@ -408,6 +408,10 @@
     <script>
         // API Configuration
         const API_BASE = 'https://l6958ys9p7.execute-api.ap-south-1.amazonaws.com/Prod';
+        
+        // HeyGen Configuration
+        const HEYGEN_EMBED_URL = 'https://labs.heygen.com/guest/streaming-embed?share=eyJxdWFsaXR5IjoiaGlnaCIsImF2YXRhck5hbWUiOiJEZXh0ZXJfRG9jdG9yX1N0YW5kaW5nMl9w%0D%0AdWJsaWMiLCJwcmV2aWV3SW1nIjoiaHR0cHM6Ly9maWxlczIuaGV5Z2VuLmFpL2F2YXRhci92My84%0D%0AOGQ0MjFmOTM5MDQ0YmIwOGQ4OTJlODMzOTMxOTQ4Yl80NTU5MC9wcmV2aWV3X3RhbGtfMS53ZWJw%0D%0AIiwibmVlZFJlbW92ZUJhY2tncm91bmQiOmZhbHNlLCJrbm93bGVkZ2VCYXNlSWQiOiIzMzA5NGVk%0D%0AZTYzMDQ0NzBiYmEyYjEyNjYxMjBiMWVmNSIsInVzZXJuYW1lIjoiMzRjM2UzZTRiZjNkNGU3Nzk4%0D%0AY2NkZTczY2U1YWIyNjUifQ%3D%3D&inIFrame=1';
+        
         let authToken = localStorage.getItem('auth_token');
         let currentUser = null;
 
@@ -575,9 +579,7 @@
                 return;
             }
             
-            const avatarUrl = 'https://labs.heygen.com/guest/streaming-embed?share=eyJxdWFsaXR5IjoiaGlnaCIsImF2YXRhck5hbWUiOiJEZXh0ZXJfRG9jdG9yX1N0YW5kaW5nMl9w%0D%0AdWJsaWMiLCJwcmV2aWV3SW1nIjoiaHR0cHM6Ly9maWxlczIuaGV5Z2VuLmFpL2F2YXRhci92My84%0D%0AOGQ0MjFmOTM5MDQ0YmIwOGQ4OTJlODMzOTMxOTQ4Yl80NTU5MC9wcmV2aWV3X3RhbGtfMS53ZWJw%0D%0AIiwibmVlZFJlbW92ZUJhY2tncm91bmQiOmZhbHNlLCJrbm93bGVkZ2VCYXNlSWQiOiI2ODM0YjRl%0D%0AYzVhOTg0M2UxYTBkNGQ0ODViMTQwOWY4YyIsInVzZXJuYW1lIjoiYjcyMGVmMmQwNzc4NDUxMTlh%0D%0AMDAxNjMwODMwNGQxMjYifQ%3D%3D&inIFrame=1';
-            
-            iframe.src = avatarUrl;
+            iframe.src = HEYGEN_EMBED_URL;
             document.getElementById('avatarOverlay').classList.add('show');
             document.getElementById('avatar-container').classList.add('show');
         }
