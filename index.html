@@ -280,70 +280,71 @@
 
         .product-hero {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
             align-items: center;
-            margin-bottom: 4rem;
+            margin-bottom: 2rem;
         }
 
         .product-image {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 20px;
-            padding: 2rem;
+            border-radius: 15px;
+            padding: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 300px;
+            min-height: 150px;
+            max-width: 200px;
         }
 
         .product-image img {
-            max-width: 70%;
+            max-width: 100%;
             height: auto;
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         .product-info h3 {
-            font-size: 2rem;
+            font-size: 1.5rem;
             color: var(--primary-blue);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .product-tagline {
-            font-size: 1.25rem;
+            font-size: 1rem;
             color: var(--text-dark);
             font-weight: 600;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .coming-soon {
             display: inline-block;
             background: var(--light-blue);
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
             font-weight: 500;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
         }
 
         .specs-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
         .spec-card {
             background: var(--background-light);
-            padding: 2rem;
-            border-radius: 15px;
-            border-left: 4px solid var(--primary-blue);
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 3px solid var(--primary-blue);
         }
 
         .spec-card h4 {
             color: var(--primary-blue);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
         }
 
         .spec-table {
@@ -355,8 +356,9 @@
         .spec-table th,
         .spec-table td {
             text-align: left;
-            padding: 0.75rem;
+            padding: 0.4rem;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            font-size: 0.75rem;
         }
 
         .spec-table th {
@@ -371,13 +373,14 @@
 
         .spec-list {
             list-style: none;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
 
         .spec-list li {
-            padding: 0.5rem 0;
+            padding: 0.25rem 0;
             color: var(--text-dark);
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            font-size: 0.8rem;
         }
 
         .spec-list li:last-child {
@@ -386,16 +389,224 @@
 
         .feature-highlight {
             background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            margin-top: 2rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
         }
 
         .feature-highlight h5 {
             color: var(--primary-blue);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .feature-highlight p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        .feature-highlights-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        /* FASTS Framework Section */
+        .fasts-section {
+            background: linear-gradient(135deg, var(--background-light) 0%, #e3f2fd 100%);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            border-radius: 20px;
+        }
+
+        .fasts-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .fasts-header h3 {
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .fasts-header .subtitle {
+            font-size: 1rem;
+            color: var(--light-blue);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .fasts-header p {
             font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 1rem auto 0;
+        }
+
+        .fasts-philosophy {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+            text-align: center;
+            border-left: 4px solid var(--light-blue);
+        }
+
+        .fasts-philosophy p {
+            font-size: 1.15rem;
+            color: var(--text-dark);
+            font-style: italic;
+            margin: 0;
+        }
+
+        .fasts-modules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .fasts-module {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fasts-module::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--light-blue));
+        }
+
+        .fasts-module:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .module-badge {
+            display: inline-block;
+            background: var(--primary-blue);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .module-badge.tis { background: #4CAF50; }
+        .module-badge.ams { background: #2196F3; }
+        .module-badge.ate { background: #FF9800; }
+        .module-badge.ops { background: #9C27B0; }
+
+        .fasts-module h4 {
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .fasts-module .module-full-name {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .fasts-module p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .module-timeline {
+            display: inline-block;
+            background: var(--background-light);
+            color: var(--text-dark);
+            padding: 0.25rem 0.6rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        /* Reliability Gradient */
+        .reliability-gradient {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .reliability-gradient h5 {
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .gradient-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .gradient-item {
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .gradient-item.tis { background: #4CAF50; }
+        .gradient-item.ams { background: #2196F3; }
+        .gradient-item.ate { background: #FF9800; }
+        .gradient-item.ops { background: #9C27B0; }
+
+        .gradient-arrow {
+            color: var(--text-light);
+            font-size: 1.5rem;
+        }
+
+        .gradient-label {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding: 0 1rem;
+        }
+
+        .gradient-label span {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* FASTS Summary */
+        .fasts-summary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+        }
+
+        .fasts-summary p {
+            color: white;
+            font-size: 1.1rem;
+            margin: 0;
+            max-width: 800px;
         }
 
         /* Stats Section */
@@ -544,12 +755,39 @@
                 text-align: center;
             }
 
+            .product-image {
+                max-width: 150px;
+                margin: 0 auto;
+            }
+
             .specs-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .feature-highlights-row {
                 grid-template-columns: 1fr;
             }
 
             .spec-table {
                 font-size: 0.9rem;
+            }
+
+            .fasts-modules {
+                grid-template-columns: 1fr;
+            }
+
+            .gradient-flow {
+                flex-direction: column;
+            }
+
+            .gradient-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .specs-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -584,6 +822,14 @@
             60% {
                 transform: translateX(-50%) translateY(-5px);
             }
+        }
+
+        /* Product Divider */
+        .product-divider {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--light-blue), transparent);
+            margin: 4rem 0;
         }
     </style>
 </head>
@@ -652,8 +898,9 @@
 
     <!-- Products Section -->
     <section id="products" class="section products">
-        <h2>Tools</h2>
+        <h2>Products</h2>
         
+        <!-- PrecisionBand Product -->
         <div class="product-hero">
             <div class="product-image">
                 <img src="pb.png" alt="PrecisionBand Product">
@@ -741,24 +988,92 @@
             </div>
         </div>
 
-        <div class="feature-highlight">
-            <h5>For Athletes Who Earn It</h5>
-            <p>We believe in rewarding effort. Every metric, every heartbeat you push forward, helps you unlock your personal and financial rewards through our upcoming Effort-to-Earn™ Engine, where real effort equals real value.</p>
+        <div class="feature-highlights-row">
+            <div class="feature-highlight">
+                <h5>For Athletes Who Earn It</h5>
+                <p>Unlock personal and financial rewards through our Effort-to-Earn™ Engine, where real effort equals real value.</p>
+            </div>
+
+            <div class="feature-highlight">
+                <h5>What's in the Box</h5>
+                <p>PrecisionBand™ Strap, Magnetic Charging Dock, Quick Start Guide, PrecisionCloud™ Dashboard Access</p>
+            </div>
+
+            <div class="feature-highlight">
+                <h5>Data Ownership & Privacy</h5>
+                <p>Your data stays yours. Local encryption, cloud sync, GDPR compliant. API integrations for coaches and federations.</p>
+            </div>
         </div>
 
-        <div class="feature-highlight">
-            <h5>What's in the Box</h5>
-            <ul class="spec-list">
-                <li>PrecisionBand™ Performance Strap</li>
-                <li>Magnetic Charging Dock</li>
-                <li>Quick Start Guide</li>
-                <li>Access to PrecisionCloud™ Performance Dashboard (Web + App)</li>
-            </ul>
-        </div>
+        <!-- Divider -->
+        <div class="product-divider"></div>
 
-        <div class="feature-highlight">
-            <h5>Data Ownership & Privacy</h5>
-            <p>Your data stays yours. Local encryption and cloud sync with full control. GDPR and athlete-rights compliant. API integrations available for coaches, federations, and performance platforms.</p>
+        <!-- FASTS Framework -->
+        <div class="fasts-section fade-in">
+            <div class="fasts-header">
+                <div class="subtitle">Performance Framework</div>
+                <h3>FASTS</h3>
+                <p>Fully Automated Sports Training Systems — A self-evolving sports performance framework for Olympic-level athlete intelligence.</p>
+            </div>
+
+            <div class="fasts-philosophy">
+                <p>"Not a collection of tools, but a performance framework that learns and evolves with the athlete."</p>
+            </div>
+
+            <div class="fasts-modules">
+                <div class="fasts-module fade-in">
+                    <span class="module-badge tis">TIS</span>
+                    <h4>Talent Intelligence System</h4>
+                    <div class="module-full-name">Early Talent Discovery & Signal Amplification</div>
+                    <p>Digitize and amplify early talent signals for faster, more accurate identification. Lightweight, fast to deploy, focused on trajectory over rankings.</p>
+                    <span class="module-timeline">~1 month deployment</span>
+                </div>
+
+                <div class="fasts-module fade-in">
+                    <span class="module-badge ams">AMS</span>
+                    <h4>Athlete Management System</h4>
+                    <div class="module-full-name">Persistent Athlete Identity & Lifecycle</div>
+                    <p>Create persistent athlete identity with long-term performance memory. Multi-role access for coaches, S&C, medical, and federation stakeholders.</p>
+                    <span class="module-timeline">~2 months deployment</span>
+                </div>
+
+                <div class="fasts-module fade-in">
+                    <span class="module-badge ate">ATE</span>
+                    <h4>Automated Training Engine</h4>
+                    <div class="module-full-name">Adaptive Closed-Loop Training</div>
+                    <p>Hybrid rule-based and neural system for adaptive training. Continuous feedback loops with human override always supported.</p>
+                    <span class="module-timeline">Hybrid AI System</span>
+                </div>
+
+                <div class="fasts-module fade-in">
+                    <span class="module-badge ops">OPS</span>
+                    <h4>Olympic Performance System</h4>
+                    <div class="module-full-name">Elite-Level Performance Engineering</div>
+                    <p>Highest reliability layer for Olympic-level outcomes. Athlete-specific precision models designed for high-stakes environments.</p>
+                    <span class="module-timeline">Premium Tier</span>
+                </div>
+            </div>
+
+            <div class="reliability-gradient">
+                <h5>Reliability & Trust Gradient</h5>
+                <div class="gradient-flow">
+                    <span class="gradient-item tis">TIS</span>
+                    <span class="gradient-arrow">→</span>
+                    <span class="gradient-item ams">AMS</span>
+                    <span class="gradient-arrow">→</span>
+                    <span class="gradient-item ate">ATE</span>
+                    <span class="gradient-arrow">→</span>
+                    <span class="gradient-item ops">OPS</span>
+                </div>
+                <div class="gradient-label">
+                    <span>Rapid Innovation</span>
+                    <span>Maximum Confidence</span>
+                </div>
+            </div>
+
+            <div class="fasts-summary">
+                <p>Institutions can adopt individual modules independently, while maximum value is realized when FASTS is deployed as a unified platform — scaling seamlessly from talent discovery to Olympic performance.</p>
+            </div>
         </div>
     </section>
 
